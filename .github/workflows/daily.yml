@@ -1,0 +1,36 @@
+ame: Daily PET Price Fetch
+
+on:
+  schedule:
+    # هر روز ساعت ۹ صبح به وقت ایران (۰۵:۳۰ UTC)
+    - cron: "30 5 * * *"
+  workflow_dispatch: {}   # این خط اجازه می‌ده دستی هم از تب Actions اجراش کنی
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-price:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run price fetch script
+        run: python fetch_price.py
+
+      - name: Commit updated price history
+        run: |
+          git config user.name "price-bot"
+          git config user.email "price-bot@users.noreply.github.com"
+          git add price_history.json
+          git diff --staged --quiet || git commit -m "به‌روزرسانی خودکار قیمت روزانه"
+          git push
