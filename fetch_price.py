@@ -16,7 +16,7 @@ import requests
 CHANNEL_USERNAME = "Amizehaye_Polymer_Toos"
 
 # باید عوض کنی: بخشی از متن که قبل از قیمت گرید شما می‌آید
-PRODUCT_KEYWORD = "گرانول پلی‌اتیلن"
+PRODUCT_KEYWORD = "PET 781"
 
 # فایل خروجی که تاریخچه‌ی قیمت در آن ذخیره می‌شود
 OUTPUT_FILE = "price_history.json"
