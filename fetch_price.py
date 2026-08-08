@@ -32,16 +32,17 @@ def fetch_channel_html(channel_username):
 
 
 def extract_price(html, keyword):
-    # به دنبال خطی می‌گردد که حاوی کلمه‌ی کلیدی محصول است
-    # و اولین عدد بزرگ (قیمت) را از همان خط استخراج می‌کند
     messages = re.findall(r'tgme_widget_message_text[^>]*>(.*?)</div>', html, re.DOTALL)
     for msg in reversed(messages):
         plain_text = re.sub(r'<[^>]+>', ' ', msg)
         if keyword in plain_text:
             numbers = re.findall(r'[\d,]{4,}', plain_text)
             if numbers:
-                cleaned = numbers[0].replace(',', '')
-                return float(cleaned)
+                cleaned_numbers = [float(n.replace(',', '')) for n in numbers]
+                # فقط عددهایی که واقعاً می‌تونن قیمت باشن (بالای ۱۰۰۰۰) رو در نظر بگیر
+                valid_prices = [n for n in cleaned_numbers if n > 10000]
+                if valid_prices:
+                    return max(valid_prices)
     return None
 
 
