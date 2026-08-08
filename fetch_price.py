@@ -34,7 +34,7 @@ def fetch_channel_html(channel_username):
 def extract_price(html, keyword):
     # به دنبال خطی می‌گردد که حاوی کلمه‌ی کلیدی محصول است
     # و اولین عدد بزرگ (قیمت) را از همان خط استخراج می‌کند
-    messages = re.findall(r'tgme_widget_message_text[^>]>(.?)</div>', html, re.DOTALL)
+    messages = re.findall(r'tgme_widget_message_text[^>]*>(.*?)</div>', html, re.DOTALL)
     for msg in reversed(messages):
         plain_text = re.sub(r'<[^>]+>', ' ', msg)
         if keyword in plain_text:
@@ -77,5 +77,5 @@ def main():
     print("ثبت شد: " + today + " -> " + str(price) + " تومان")
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
